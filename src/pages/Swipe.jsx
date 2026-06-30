@@ -13,7 +13,13 @@ export default function Swipe() {
   const [drag, setDrag] = useState({ x: 0, active: false })
   const [flyOut, setFlyOut] = useState(null) // 'left' | 'right' | null
   const [match, setMatch] = useState(null)
+  const [showHint, setShowHint] = useState(() => !localStorage.getItem('duoz.swipehint'))
   const startX = useRef(0)
+
+  const dismissHint = () => {
+    setShowHint(false)
+    localStorage.setItem('duoz.swipehint', '1')
+  }
 
   const current = MOCK_PLAYERS[index]
   const next = MOCK_PLAYERS[index + 1]
@@ -106,6 +112,25 @@ export default function Swipe() {
               <PlayerCard player={current} verdict={verdict} />
             </div>
           </>
+        )}
+
+        {showHint && current && (
+          <div className="swipe-hint" onClick={dismissHint}>
+            <div className="swipe-hint__card" onClick={(e) => e.stopPropagation()}>
+              <div className="swipe-hint__title neon-text">⚔️ READY CHECK</div>
+              <p className="muted">Find your duo like a matchmaking accept screen:</p>
+              <div className="swipe-hint__rows">
+                <div className="swipe-hint__row">
+                  <span className="hint-arrow nope">👈</span> Swipe <b className="nope">LEFT</b> to <b className="nope">DODGE</b>
+                </div>
+                <div className="swipe-hint__row">
+                  <span className="hint-arrow like">👉</span> Swipe <b className="like">RIGHT</b> to <b className="like">DUO UP</b>
+                </div>
+              </div>
+              <p className="muted" style={{ fontSize: 13 }}>A mutual <b className="like">DUO UP</b> = a Match → jump into chat.</p>
+              <button className="btn btn--primary btn--block" onClick={dismissHint}>GLHF — let’s go 🎮</button>
+            </div>
+          </div>
         )}
       </div>
 

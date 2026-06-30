@@ -71,7 +71,12 @@ export default function Profile() {
           const game = getGame(g.id)
           return (
             <div className="game-row" key={g.id}>
-              <span className="game-row__name"><span style={{ fontSize: 18 }}>{game?.emoji}</span>{game?.name}</span>
+              <div>
+                <span className="game-row__name"><span style={{ fontSize: 18 }}>{game?.emoji}</span>{game?.name}</span>
+                {g.roles?.length > 0 && (
+                  <div className="muted" style={{ fontSize: 12, marginTop: 4 }}>🎭 {g.roles.join(' · ')}</div>
+                )}
+              </div>
               <RankBadge rank={g.rank} size="sm" />
             </div>
           )

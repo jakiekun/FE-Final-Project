@@ -67,6 +67,37 @@
 .swipe-btn--like:hover { box-shadow: var(--glow-primary); }
 .swipe-btn--lg { width: 72px; height: 72px; font-size: 30px; }
 
+/* ---- First-time swipe hint (Ready Check) ---- */
+.swipe-hint {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 7, 15, 0.8);
+  backdrop-filter: blur(7px);
+  border-radius: var(--radius);
+  padding: 18px;
+  animation: fade-in 0.2s ease;
+  cursor: pointer;
+}
+.swipe-hint__card { text-align: center; max-width: 320px; display: flex; flex-direction: column; gap: 12px; cursor: default; }
+.swipe-hint__title { font-family: var(--font-heading); font-size: 26px; font-weight: 900; }
+.swipe-hint__rows { display: flex; flex-direction: column; gap: 10px; margin: 4px 0; }
+.swipe-hint__row {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 15px; padding: 12px;
+  background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+}
+.hint-arrow { font-size: 22px; }
+.swipe-hint b.like { color: var(--color-success); }
+.swipe-hint b.nope { color: var(--color-error); }
+.hint-arrow.like { animation: hint-right 1.2s ease-in-out infinite; }
+.hint-arrow.nope { animation: hint-left 1.2s ease-in-out infinite; }
+@keyframes hint-right { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(7px); } }
+@keyframes hint-left { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-7px); } }
+
 /* ---- Match overlay ---- */
 .match-overlay {
   position: fixed;

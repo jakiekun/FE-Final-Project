@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { GAMES, PLAYSTYLES, TIME_SLOTS, getGame, getRankMeta } from '../data/games.js'
+import { GAMES, PLAYSTYLES, TIME_SLOTS, getGame, getRankMeta, getRoles } from '../data/games.js'
 import { useAuth } from '../context/AuthContext.jsx'
 import RankBadge from '../components/RankBadge.jsx'
 import './Onboarding.css'
@@ -13,6 +13,8 @@ export default function Onboarding() {
 
   const [step, setStep] = useState(1)
   const [games, setGames] = useState({}) // { valorant: 'Diamond', ... }
+  const [roles, setRoles] = useState({}) // { valorant: ['Duelist'], ... }
+  const [search, setSearch] = useState('')
   const [availability, setAvailability] = useState([])
   const [playstyles, setPlaystyles] = useState([])
   const [verified, setVerified] = useState(false)
@@ -27,6 +29,12 @@ export default function Onboarding() {
     })
   }
   const setRank = (id, rank) => setGames((prev) => ({ ...prev, [id]: rank }))
+  const toggleRole = (gid, role) =>
+    setRoles((prev) => {
+      const cur = prev[gid] || []
+      return { ...prev, [gid]: cur.includes(role) ? cur.filter((r) => r !== role) : [...cur, role] }
+    })
+  const filteredGames = GAMES.filter((g) => g.name.toLowerCase().includes(search.trim().toLowerCase()))
 
   const toggleIn = (list, setList, value) =>
     setList(list.includes(value) ? list.filter((v) => v !== value) : [...list, value])
@@ -46,7 +54,7 @@ export default function Onboarding() {
   const finish = () => {
     saveProfile({
       gamertag: user?.name || 'Player',
-      games: Object.entries(games).map(([id, rank]) => ({ id, rank })),
+      games: Object.entries(games).map(([id, rank]) => ({ id, rank, roles: roles[id] || [] })),
       availability,
       playstyles,
       verified,
@@ -67,10 +75,18 @@ export default function Onboarding() {
         {step === 1 && (
           <>
             <h2>Which games do you play?</h2>
-            <p className="onb__hint">Pick your games and set your rank in each one.</p>
+            <p className="onb__hint">Search and pick your games, then set rank &amp; role in each.</p>
+
+            <input
+              className="input"
+              style={{ marginBottom: 14 }}
+              placeholder="🔍 Search games…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
 
             <div className="game-grid">
-              {GAMES.map((g) => (
+              {filteredGames.map((g) => (
                 <div
                   key={g.id}
                   className={'game-tile' + (g.id in games ? ' is-selected' : '')}
@@ -83,10 +99,12 @@ export default function Onboarding() {
                   {g.name}
                 </div>
               ))}
+              {filteredGames.length === 0 && <p className="muted">No games match “{search}”.</p>}
             </div>
 
             {Object.keys(games).map((id) => {
               const g = getGame(id)
+              const gameRoles = getRoles(id)
               return (
                 <div className="rank-picker" key={id}>
                   <label><span>{g.emoji}</span> {g.name} — pick your rank</label>
@@ -103,6 +121,22 @@ export default function Onboarding() {
                       </button>
                     ))}
                   </div>
+                  {gameRoles.length > 0 && (
+                    <>
+                      <label style={{ marginTop: 4 }}>Your role(s)</label>
+                      <div className="chip-group">
+                        {gameRoles.map((role) => (
+                          <span
+                            key={role}
+                            className={'chip' + ((roles[id] || []).includes(role) ? ' chip--active' : '')}
+                            onClick={() => toggleRole(id, role)}
+                          >
+                            {role}
+                          </span>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               )
             })}

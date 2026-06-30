@@ -373,6 +373,8 @@ ul { list-style: none; }
 .rank-badge.is-active .rank-badge__emblem {
   box-shadow: 0 0 18px var(--rank), 0 0 32px var(--rank), inset 0 0 10px rgba(255, 255, 255, 0.15);
 }
+.rank-badge svg { transition: transform 0.15s ease; }
+.rank-badge.is-active svg { transform: scale(1.12); }
 @keyframes rank-pulse {
   0%, 100% { box-shadow: 0 0 8px var(--rank), inset 0 0 8px rgba(255, 255, 255, 0.08); }
   50% { box-shadow: 0 0 16px var(--rank), inset 0 0 10px rgba(255, 255, 255, 0.12); }
