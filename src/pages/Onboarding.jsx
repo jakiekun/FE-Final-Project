@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { GAMES, PLAYSTYLES, TIME_SLOTS, getGame } from '../data/games.js'
+import { GAMES, PLAYSTYLES, TIME_SLOTS, getGame, getRankMeta } from '../data/games.js'
 import { useAuth } from '../context/AuthContext.jsx'
+import RankBadge from '../components/RankBadge.jsx'
 import './Onboarding.css'
 
 const TOTAL_STEPS = 3
@@ -88,10 +89,20 @@ export default function Onboarding() {
               const g = getGame(id)
               return (
                 <div className="rank-picker" key={id}>
-                  <label><span>{g.emoji}</span> {g.name}</label>
-                  <select className="select" value={games[id]} onChange={(e) => setRank(id, e.target.value)}>
-                    {g.ranks.map((r) => <option key={r} value={r}>{r}</option>)}
-                  </select>
+                  <label><span>{g.emoji}</span> {g.name} — pick your rank</label>
+                  <div className="rank-pick-row">
+                    {g.ranks.map((r) => (
+                      <button
+                        type="button"
+                        key={r}
+                        className={'rank-pick' + (games[id] === r ? ' is-active' : '')}
+                        style={{ '--rank': getRankMeta(r).color }}
+                        onClick={() => setRank(id, r)}
+                      >
+                        <RankBadge rank={r} size="sm" active={games[id] === r} />
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )
             })}

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PlayerCard from '../components/PlayerCard.jsx'
+import SectionTabs from '../components/SectionTabs.jsx'
 import { MOCK_PLAYERS } from '../data/mockPlayers.js'
 import './Swipe.css'
 
@@ -73,6 +74,7 @@ export default function Swipe() {
 
   return (
     <div className="screen swipe">
+      <SectionTabs />
       <div className="swipe__header">
         <h1 className="page-title" style={{ marginBottom: 0 }}>Discover players</h1>
         <span className="swipe__filter">⚙️ All games</span>

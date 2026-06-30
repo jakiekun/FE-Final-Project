@@ -24,12 +24,6 @@ export default function Home() {
 
   return (
     <>
-      <div className="home__orbs" aria-hidden="true">
-        <span className="orb orb--1" />
-        <span className="orb orb--2" />
-        <span className="orb orb--3" />
-      </div>
-
       <div className="home">
         <nav className="home__nav">
           <Logo size={36} variant="mark" />

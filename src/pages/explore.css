@@ -1,0 +1,85 @@
+/* Shared styles for Coaching / Esports / Tournaments */
+
+.explore-banner {
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+  border: 1px solid var(--color-border);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(168, 85, 247, 0.25), transparent 55%),
+    radial-gradient(circle at 0% 100%, rgba(0, 229, 199, 0.18), transparent 55%),
+    var(--color-surface);
+  position: relative;
+  overflow: hidden;
+}
+.explore-banner h2 { font-size: 22px; margin-bottom: 6px; }
+.explore-banner p { color: var(--color-text-dim); font-size: 14px; }
+
+/* generic filter pill row */
+.filter-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: var(--space-2); scrollbar-width: none; }
+.filter-row::-webkit-scrollbar { display: none; }
+
+/* ---- Coaching ---- */
+.coach-card {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+}
+.coach-card__avatar {
+  width: 64px; height: 64px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-secondary);
+  box-shadow: var(--glow-secondary);
+  flex-shrink: 0;
+}
+.coach-card__name { font-weight: 700; font-size: 17px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.coach-card__price {
+  text-align: end;
+  flex-shrink: 0;
+}
+.coach-card__price b { font-family: var(--font-heading); font-size: 20px; color: var(--color-primary); }
+.coach-card__price span { display: block; font-size: 11px; color: var(--color-text-dim); }
+
+/* ---- Esports teams ---- */
+.team-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-2); }
+@media (min-width: 420px) { .team-grid { grid-template-columns: 1fr 1fr; } }
+.team-card { display: flex; flex-direction: column; gap: 10px; }
+.team-logo {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 15px;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 16px var(--team);
+  background: linear-gradient(145deg, var(--team), #0b0e1a 130%);
+}
+.team-card__followers { font-size: 12px; color: var(--color-text-dim); }
+.team-roster { font-size: 13px; color: var(--color-text-dim); line-height: 1.6; }
+.team-achievement { font-size: 13px; color: var(--color-text); }
+
+/* ---- Tournaments ---- */
+.tournament-card { display: flex; flex-direction: column; gap: 10px; }
+.tournament-card__top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.tournament-card__title { font-weight: 700; font-size: 17px; }
+.tournament-card__meta { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--color-text-dim); }
+.tournament-card__meta b { color: var(--color-text); font-weight: 600; }
+.prize-tag {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--color-primary);
+  text-shadow: var(--glow-primary);
+  white-space: nowrap;
+}
+.status-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: var(--radius-full);
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.status-pill--live { background: rgba(255, 45, 155, 0.15); color: var(--color-accent); border: 1px solid var(--color-accent); }
+.status-pill--upcoming { background: rgba(0, 229, 199, 0.12); color: var(--color-primary); border: 1px solid rgba(0, 229, 199, 0.45); }
+.status-pill--finished { background: var(--color-surface-2); color: var(--color-text-dim); border: 1px solid var(--color-border); }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 8px var(--color-accent); animation: rank-pulse 1.2s ease-in-out infinite; }

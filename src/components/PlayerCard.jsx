@@ -1,4 +1,5 @@
 import { getGame } from '../data/games.js'
+import RankBadge from './RankBadge.jsx'
 import './PlayerCard.css'
 
 // A single player profile card shown in the swipe deck.
@@ -52,7 +53,7 @@ export default function PlayerCard({ player, verdict = null }) {
                   <span style={{ fontSize: 18 }}>{game?.emoji}</span>
                   {game?.name}
                 </span>
-                <span className="badge badge--rank">{g.rank}</span>
+                <RankBadge rank={g.rank} size="sm" />
               </div>
             )
           })}

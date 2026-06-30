@@ -161,6 +161,37 @@
 .toggle::after { content: ''; position: absolute; top: 2px; inset-inline-start: 2px; width: 20px; height: 20px; border-radius: var(--radius-full); background: #fff; transition: inset-inline-start 0.2s ease; }
 .toggle.on::after { inset-inline-start: 22px; }
 
+/* Game plays */
+.gameplay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.clip-card { position: relative; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--color-border); background: var(--color-surface); }
+.clip-card__thumb {
+  aspect-ratio: 16 / 9;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; color: #fff;
+  background: linear-gradient(135deg, rgba(0, 229, 199, 0.28), rgba(168, 85, 247, 0.28), rgba(255, 45, 155, 0.28));
+  text-decoration: none;
+  transition: filter 0.15s ease;
+}
+.clip-card__thumb:hover { filter: brightness(1.15); }
+.clip-card__title { padding: 8px 10px; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.clip-card__del { position: absolute; top: 6px; inset-inline-end: 6px; width: 24px; height: 24px; border-radius: 50%; background: rgba(0,0,0,0.6); color: #fff; border: none; font-size: 12px; cursor: pointer; }
+.clip-add {
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  aspect-ratio: 16 / 9; gap: 4px;
+  color: var(--color-text-dim); cursor: pointer; font-size: 13px;
+  background: var(--color-surface-2); transition: all 0.15s ease;
+}
+.clip-add:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+/* Connected accounts */
+.connect-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); margin-bottom: 8px; }
+.connect-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; border: 1px solid rgba(255,255,255,0.12); flex-shrink: 0; }
+.connect-row__body { flex: 1; min-width: 0; }
+.connect-row__name { font-weight: 600; }
+.connect-row__desc { font-size: 12px; color: var(--color-text-dim); }
+
 /* rate stars */
 .stars { display: flex; gap: 8px; justify-content: center; font-size: 40px; margin: var(--space-3) 0; }
 .star { cursor: pointer; color: var(--color-border); transition: transform 0.1s ease, color 0.15s ease; }

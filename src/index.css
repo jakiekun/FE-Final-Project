@@ -62,6 +62,13 @@ body,
   height: 100%;
 }
 
+/* content sits above the fixed animated background canvas */
+.app-bg-content {
+  position: relative;
+  z-index: 1;
+  min-height: 100%;
+}
+
 body {
   font-family: var(--font-body);
   font-size: 16px;
@@ -333,6 +340,65 @@ ul { list-style: none; }
   object-fit: cover;
   background: var(--color-surface-2);
   border: 2px solid var(--color-border);
+}
+
+/* ---- Rank badges (glowing tier emblems) ---- */
+.rank-badge { display: inline-flex; align-items: center; gap: 8px; }
+.rank-badge__emblem {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 1;
+  background: radial-gradient(circle at 50% 25%, rgba(255, 255, 255, 0.15), transparent 70%), #0b0e1a;
+  border: 2px solid var(--rank);
+  box-shadow: 0 0 10px var(--rank), inset 0 0 8px rgba(255, 255, 255, 0.08);
+  animation: rank-pulse 2.6s ease-in-out infinite;
+}
+.rank-badge__label {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--rank);
+  text-shadow: 0 0 8px var(--rank);
+  white-space: nowrap;
+}
+.rank-badge--sm .rank-badge__emblem { width: 22px; height: 22px; font-size: 12px; border-width: 1.5px; }
+.rank-badge--sm .rank-badge__label { font-size: 12px; }
+.rank-badge--lg .rank-badge__emblem { width: 46px; height: 46px; font-size: 22px; }
+.rank-badge--lg .rank-badge__label { font-size: 16px; }
+.rank-badge.is-active .rank-badge__emblem {
+  box-shadow: 0 0 18px var(--rank), 0 0 32px var(--rank), inset 0 0 10px rgba(255, 255, 255, 0.15);
+}
+@keyframes rank-pulse {
+  0%, 100% { box-shadow: 0 0 8px var(--rank), inset 0 0 8px rgba(255, 255, 255, 0.08); }
+  50% { box-shadow: 0 0 16px var(--rank), inset 0 0 10px rgba(255, 255, 255, 0.12); }
+}
+
+/* selectable rank chip (onboarding) */
+.rank-pick {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  scroll-snap-align: start;
+}
+.rank-pick:hover { border-color: var(--rank); }
+.rank-pick.is-active { border-color: var(--rank); background: color-mix(in srgb, var(--rank) 12%, transparent); }
+.rank-pick-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scroll-snap-type: x proximity;
 }
 
 /* empty state */

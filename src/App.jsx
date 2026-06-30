@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import AppLayout from './components/AppLayout.jsx'
+import AnimatedBackground from './components/AnimatedBackground.jsx'
 
 // public
 import Home from './pages/Home.jsx'
@@ -11,6 +12,9 @@ import ForgotPassword from './pages/ForgotPassword.jsx'
 // authed
 import Onboarding from './pages/Onboarding.jsx'
 import Swipe from './pages/Swipe.jsx'
+import Coaching from './pages/Coaching.jsx'
+import Esports from './pages/Esports.jsx'
+import Tournaments from './pages/Tournaments.jsx'
 import Matches from './pages/Matches.jsx'
 import ChatList from './pages/ChatList.jsx'
 import Chat from './pages/Chat.jsx'
@@ -22,6 +26,9 @@ import NotFound from './pages/NotFound.jsx'
 
 export default function App() {
   return (
+    <>
+    <AnimatedBackground />
+    <div className="app-bg-content">
     <Routes>
       {/* ---------- Public ---------- */}
       <Route path="/" element={<Home />} />
@@ -50,6 +57,9 @@ export default function App() {
       >
         <Route index element={<Navigate to="discover" replace />} />
         <Route path="discover" element={<Swipe />} />
+        <Route path="coaching" element={<Coaching />} />
+        <Route path="esports" element={<Esports />} />
+        <Route path="tournaments" element={<Tournaments />} />
         <Route path="matches" element={<Matches />} />
         <Route path="chat" element={<ChatList />} />
         <Route path="profile" element={<Profile />} />
@@ -86,5 +96,7 @@ export default function App() {
 
       <Route path="*" element={<NotFound />} />
     </Routes>
+    </div>
+    </>
   )
 }
