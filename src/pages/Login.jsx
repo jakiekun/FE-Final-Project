@@ -32,8 +32,8 @@ export default function Login() {
     try {
       await login({ email, password })
       navigate(from, { replace: true })
-    } catch {
-      setError('Login failed. Please try again.')
+    } catch (err) {
+      setError(err?.message || 'Login failed. Please try again.')
     } finally {
       setLoading(false)
     }

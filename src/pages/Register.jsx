@@ -13,6 +13,7 @@ export default function Register() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [captcha, setCaptcha] = useState('')
+  const [sent, setSent] = useState(false)
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
@@ -37,10 +38,11 @@ export default function Register() {
     }
     setLoading(true)
     try {
-      await register({ name: form.name, email: form.email, password: form.password })
-      navigate('/onboarding', { replace: true })
-    } catch {
-      setError('Sign up failed. Please try again.')
+      const { needsConfirm } = await register({ name: form.name, email: form.email, password: form.password })
+      if (needsConfirm) setSent(true)
+      else navigate('/onboarding', { replace: true })
+    } catch (err) {
+      setError(err?.message || 'Sign up failed. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -56,6 +58,11 @@ export default function Register() {
         <p>Join Duoz and find a duo at your level</p>
       </div>
 
+      {sent ? (
+        <div className="auth__alert auth__alert--success">
+          ✓ Account created! We sent a confirmation link to <b>{form.email}</b>. Confirm it, then <Link to="/login">log in</Link>.
+        </div>
+      ) : (
       <form onSubmit={onSubmit} noValidate>
         {error && <div className="auth__alert auth__alert--error">{error}</div>}
 
@@ -85,6 +92,7 @@ export default function Register() {
           {loading ? 'Creating account…' : 'Sign up'}
         </button>
       </form>
+      )}
 
       <p className="auth__foot">
         Already have an account? <Link to="/login">Log in</Link>
