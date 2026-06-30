@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import { getGame, GAMES, getStats } from '../data/games.js'
@@ -18,8 +18,33 @@ export default function Profile() {
   const [adding, setAdding] = useState(false)
   const [form, setForm] = useState({ title: '', game: GAMES[0].id, url: '' })
 
-  const avatar = `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${encodeURIComponent(user?.name || 'me')}&backgroundColor=151a2e`
+  const fileRef = useRef(null)
+  const defaultAvatar = `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${encodeURIComponent(user?.name || 'me')}&backgroundColor=151a2e`
+  const avatarSrc = p?.avatar || defaultAvatar
   const persist = (patch) => saveProfile({ ...(p || {}), ...patch })
+
+  const onPickPhoto = (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      const img = new Image()
+      img.onload = () => {
+        const size = 256
+        const canvas = document.createElement('canvas')
+        canvas.width = size
+        canvas.height = size
+        const ctx = canvas.getContext('2d')
+        const scale = Math.max(size / img.width, size / img.height)
+        const w = img.width * scale
+        const h = img.height * scale
+        ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h)
+        persist({ avatar: canvas.toDataURL('image/jpeg', 0.85) })
+      }
+      img.src = reader.result
+    }
+    reader.readAsDataURL(file)
+  }
 
   const addClip = (e) => {
     e.preventDefault()
@@ -59,7 +84,11 @@ export default function Profile() {
       </div>
 
       <div className="profile-header">
-        <img src={avatar} alt={user?.name} />
+        <button className="avatar-edit" onClick={() => fileRef.current?.click()} aria-label="Change profile photo">
+          <img src={avatarSrc} alt={user?.name} />
+          <span className="avatar-edit__badge">📷</span>
+        </button>
+        <input ref={fileRef} type="file" accept="image/*" hidden onChange={onPickPhoto} />
         <div className="player-card__name center" style={{ justifyContent: 'center' }}>
           {user?.name}
           {p?.verified && <span className="badge badge--verified">✓ Verified</span>}

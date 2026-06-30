@@ -9,6 +9,7 @@ create table if not exists public.profiles (
   gamertag      text,
   email         text,
   region        text,
+  avatar        text,
   bio           text default '',
   games         jsonb default '[]'::jsonb,   -- [{ id, rank, roles: [] }]
   availability  text[] default '{}',
@@ -19,6 +20,9 @@ create table if not exists public.profiles (
   rating        numeric default 5.0,
   created_at    timestamptz default now()
 );
+
+-- ensure the column exists on previously-created tables
+alter table public.profiles add column if not exists avatar text;
 
 alter table public.profiles enable row level security;
 
@@ -98,5 +102,9 @@ create policy "match members send messages"
       where m.id = match_id and (m.user_a = auth.uid() or m.user_b = auth.uid()))
   );
 
--- Enable realtime for chat
-alter publication supabase_realtime add table public.messages;
+-- Enable realtime for chat (idempotent — safe to re-run)
+do $$
+begin
+  alter publication supabase_realtime add table public.messages;
+exception when duplicate_object then null;
+end $$;

@@ -52,9 +52,13 @@ export default function Onboarding() {
   const toggleIn = (list, setList, value) =>
     setList(list.includes(value) ? list.filter((v) => v !== value) : [...list, value])
 
-  // platforms relevant to the chosen games, plus console options
+  // core verifiers always available, plus any matched to the chosen games, plus consoles
   const verifyPlatformIds = [
     ...new Set([
+      'riot',
+      'steam',
+      'battlenet',
+      'epic',
       ...Object.keys(games).map((id) => GAME_PLATFORM[id]).filter(Boolean),
       'playstation',
       'xbox',
@@ -80,6 +84,8 @@ export default function Onboarding() {
       bio: bio.trim(),
       rating: 5.0,
     })
+    // show the swipe "Ready Check" hint to this freshly-onboarded user
+    try { localStorage.removeItem('duoz.swipehint') } catch { /* ignore */ }
     navigate('/app/discover', { replace: true })
   }
 

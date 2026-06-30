@@ -97,12 +97,9 @@ export default function Swipe() {
       <SectionTabs />
       <div className="swipe__header">
         <h1 className="page-title" style={{ marginBottom: 0 }}>Discover players</h1>
-        <div className="row" style={{ gap: 8 }}>
-          {current && (
-            <button className="btn btn--ghost" style={{ padding: 4 }} onClick={() => setReporting(true)} aria-label="Report player">⚠️</button>
-          )}
-          <span className="swipe__filter">⚙️ All games</span>
-        </div>
+        {current && (
+          <button className="btn btn--ghost" style={{ padding: 4 }} onClick={() => setReporting(true)} aria-label="Report player">⚠️ Report</button>
+        )}
       </div>
 
       {reporting && current && <ReportDialog name={current.name} onClose={() => setReporting(false)} />}
