@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
+import { loadA11y, saveA11y } from '../lib/a11y.js'
 import './app.css'
 
 function Toggle({ on, onClick }) {
@@ -11,8 +12,14 @@ export default function Settings() {
   const { logout } = useAuth()
   const navigate = useNavigate()
   const [prefs, setPrefs] = useState({ notifications: true, online: true, onlyVerified: false })
+  const [a11y, setA11y] = useState(loadA11y)
 
   const toggle = (k) => setPrefs((p) => ({ ...p, [k]: !p[k] }))
+  const toggleA11y = (k) => {
+    const next = { ...a11y, [k]: !a11y[k] }
+    setA11y(next)
+    saveA11y(next)
+  }
 
   const handleLogout = () => {
     logout()
@@ -52,6 +59,21 @@ export default function Settings() {
         </button>
         <button className="list-item" onClick={() => navigate('/admin')}>
           <span>🛡️ Manage reports (Admin)</span><span className="muted">›</span>
+        </button>
+      </section>
+
+      <section className="profile-section">
+        <h3>♿ Accessibility</h3>
+        <div className="list-item">
+          <span>🌀 Reduce motion</span>
+          <Toggle on={a11y.reduceMotion} onClick={() => toggleA11y('reduceMotion')} />
+        </div>
+        <div className="list-item">
+          <span>🌗 High contrast</span>
+          <Toggle on={a11y.contrast} onClick={() => toggleA11y('contrast')} />
+        </div>
+        <button className="list-item" onClick={() => navigate('/accessibility')}>
+          <span>📄 Accessibility statement</span><span className="muted">›</span>
         </button>
       </section>
 

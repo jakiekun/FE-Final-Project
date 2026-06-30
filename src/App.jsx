@@ -22,19 +22,22 @@ import Profile from './pages/Profile.jsx'
 import Settings from './pages/Settings.jsx'
 import RatePlayer from './pages/RatePlayer.jsx'
 import Admin from './pages/Admin.jsx'
+import Accessibility from './pages/Accessibility.jsx'
 import NotFound from './pages/NotFound.jsx'
 
 export default function App() {
   return (
     <>
+    <a href="#main" className="skip-link">Skip to content</a>
     <AnimatedBackground />
-    <div className="app-bg-content">
+    <div className="app-bg-content" id="main" role="main">
     <Routes>
       {/* ---------- Public ---------- */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/accessibility" element={<Accessibility />} />
 
       {/* ---------- Onboarding (auth, no profile yet) ---------- */}
       <Route

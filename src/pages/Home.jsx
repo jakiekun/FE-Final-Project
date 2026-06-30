@@ -95,6 +95,7 @@ export default function Home() {
 
         <footer className="home__footer">
           <p>Duoz · Front-End final project · Built with Vite + React</p>
+          <p style={{ marginTop: 6 }}><Link to="/accessibility">Accessibility statement</Link></p>
         </footer>
       </div>
     </>

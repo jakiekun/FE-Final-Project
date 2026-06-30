@@ -550,3 +550,55 @@ ul { list-style: none; }
   }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+/* visible keyboard focus indicator */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* skip-to-content link (visible on focus) */
+.skip-link {
+  position: fixed;
+  top: -64px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  background: var(--color-primary);
+  color: #04221d;
+  padding: 12px 20px;
+  border-radius: 0 0 12px 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus { top: 0; text-decoration: none; }
+
+/* in-app "reduce motion" toggle (mirrors the media query) */
+html.a11y-reduce-motion *,
+html.a11y-reduce-motion *::before,
+html.a11y-reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+html.a11y-reduce-motion .reveal,
+html.a11y-reduce-motion .reveal-stagger > * { opacity: 1 !important; transform: none !important; }
+
+/* in-app "high contrast" theme — stronger text & borders, AA-friendly */
+html.a11y-contrast {
+  --color-text: #ffffff;
+  --color-text-dim: #d8def0;
+  --color-border: #717da8;
+  --color-surface: #1a2138;
+  --color-surface-2: #232c4a;
+}
+html.a11y-contrast a,
+html.a11y-contrast .neon-text { text-decoration: underline; }
+html.a11y-contrast .btn--secondary { border-width: 2px; }

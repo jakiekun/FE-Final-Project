@@ -126,13 +126,15 @@ export default function Onboarding() {
                       <label style={{ marginTop: 4 }}>Your role(s)</label>
                       <div className="chip-group">
                         {gameRoles.map((role) => (
-                          <span
+                          <button
+                            type="button"
                             key={role}
                             className={'chip' + ((roles[id] || []).includes(role) ? ' chip--active' : '')}
+                            aria-pressed={(roles[id] || []).includes(role)}
                             onClick={() => toggleRole(id, role)}
                           >
                             {role}
-                          </span>
+                          </button>
                         ))}
                       </div>
                     </>
@@ -152,10 +154,11 @@ export default function Onboarding() {
               <label>Availability</label>
               <div className="chip-group">
                 {TIME_SLOTS.map((t) => (
-                  <span key={t}
+                  <button type="button" key={t}
                     className={'chip' + (availability.includes(t) ? ' chip--active' : '')}
+                    aria-pressed={availability.includes(t)}
                     onClick={() => toggleIn(availability, setAvailability, t)}
-                  >🕐 {t}</span>
+                  >🕐 {t}</button>
                 ))}
               </div>
             </div>
@@ -164,10 +167,11 @@ export default function Onboarding() {
               <label>Playstyle</label>
               <div className="chip-group">
                 {PLAYSTYLES.map((s) => (
-                  <span key={s}
+                  <button type="button" key={s}
                     className={'chip' + (playstyles.includes(s) ? ' chip--active' : '')}
+                    aria-pressed={playstyles.includes(s)}
                     onClick={() => toggleIn(playstyles, setPlaystyles, s)}
-                  >{s}</span>
+                  >{s}</button>
                 ))}
               </div>
             </div>

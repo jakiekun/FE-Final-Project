@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { prefersReducedMotion } from '../lib/a11y.js'
 
 // Interactive neon background: a drifting particle network + floating glowing
 // polygons (triangles / hexagons) + mouse parallax & connection lines.
@@ -13,7 +14,7 @@ export default function AnimatedBackground() {
   useEffect(() => {
     const canvas = ref.current
     const ctx = canvas.getContext('2d')
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reduce = prefersReducedMotion()
 
     let w = 0
     let h = 0

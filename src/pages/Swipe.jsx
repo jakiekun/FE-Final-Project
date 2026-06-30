@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PlayerCard from '../components/PlayerCard.jsx'
 import SectionTabs from '../components/SectionTabs.jsx'
@@ -58,6 +58,18 @@ export default function Swipe() {
       setFlyOut(null)
     }, 280)
   }
+
+  // keyboard support: ← skip, → like
+  useEffect(() => {
+    const onKey = (e) => {
+      if (match || showHint || flyOut || !MOCK_PLAYERS[index]) return
+      if (e.key === 'ArrowRight') decide('like')
+      else if (e.key === 'ArrowLeft') decide('nope')
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [match, showHint, flyOut, index])
 
   const restart = () => setIndex(0)
 
