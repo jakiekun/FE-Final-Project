@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import Logo from '../components/Logo.jsx'
+import Turnstile from '../components/Turnstile.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import './auth.css'
 
@@ -14,12 +15,17 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [captcha, setCaptcha] = useState('')
 
   const onSubmit = async (e) => {
     e.preventDefault()
     setError('')
     if (!email || !password) {
       setError('Please enter your email and password.')
+      return
+    }
+    if (!captcha) {
+      setError('Please complete the “I’m human” check.')
       return
     }
     setLoading(true)
@@ -61,7 +67,9 @@ export default function Login() {
             value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
         </div>
 
-        <button className="btn btn--primary btn--block btn--lg mt-1" disabled={loading}>
+        <Turnstile onVerify={setCaptcha} />
+
+        <button className="btn btn--primary btn--block btn--lg mt-1" disabled={loading || !captcha}>
           {loading ? 'Logging in…' : 'Log in'}
         </button>
       </form>

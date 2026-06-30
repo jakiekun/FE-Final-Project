@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Logo from '../components/Logo.jsx'
+import Turnstile from '../components/Turnstile.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import './auth.css'
 
@@ -11,6 +12,7 @@ export default function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [captcha, setCaptcha] = useState('')
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
@@ -27,6 +29,10 @@ export default function Register() {
     }
     if (form.password !== form.confirm) {
       setError('Passwords do not match.')
+      return
+    }
+    if (!captcha) {
+      setError('Please complete the “I’m human” check.')
       return
     }
     setLoading(true)
@@ -73,7 +79,9 @@ export default function Register() {
             value={form.confirm} onChange={set('confirm')} autoComplete="new-password" />
         </div>
 
-        <button className="btn btn--primary btn--block btn--lg mt-1" disabled={loading}>
+        <Turnstile onVerify={setCaptcha} />
+
+        <button className="btn btn--primary btn--block btn--lg mt-1" disabled={loading || !captcha}>
           {loading ? 'Creating account…' : 'Sign up'}
         </button>
       </form>
