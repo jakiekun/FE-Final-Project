@@ -8,8 +8,8 @@ export const MOCK_PLAYERS = [
     id: 'p1', name: 'NovaStrike', realName: 'Daniel', age: 19, region: 'Haifa',
     online: true, verified: true, rating: 4.8, avatar: avatar('NovaStrike'),
     games: [
-      { id: 'valorant', rank: 'Diamond', roles: ['Duelist', 'Entry'] },
-      { id: 'cs2', rank: 'Legendary Eagle', roles: ['AWPer'] },
+      { id: 'valorant', rank: 'Diamond', roles: ['Duelist', 'Entry'], stats: { rr: '58', peak: 'Immortal 1' } },
+      { id: 'cs2', rank: 'Legendary Eagle', roles: ['AWPer'], stats: { premier: '19,200', faceit: '9' } },
     ],
     availability: ['Evening', 'Night'],
     playstyles: ['Competitive', 'Ranked Grind', 'Aggressive'],
@@ -27,8 +27,8 @@ export const MOCK_PLAYERS = [
     id: 'p3', name: 'MidOrFeed', realName: 'Yoav', age: 21, region: "Be'er Sheva",
     online: true, verified: false, rating: 4.2, avatar: avatar('MidOrFeed'),
     games: [
-      { id: 'lol', rank: 'Emerald', roles: ['Mid'] },
-      { id: 'dota2', rank: 'Ancient', roles: ['Mid (2)'] },
+      { id: 'lol', rank: 'Emerald', roles: ['Mid'], stats: { lp: '64' } },
+      { id: 'dota2', rank: 'Ancient', roles: ['Mid (2)'], stats: { mmr: '5400' } },
     ],
     availability: ['Night'],
     playstyles: ['IGL / Leader', 'Social & Chatty'],
@@ -37,7 +37,7 @@ export const MOCK_PLAYERS = [
   {
     id: 'p4', name: 'ApexPredatorIL', realName: 'Rotem', age: 27, region: 'Jerusalem',
     online: true, verified: true, rating: 4.6, avatar: avatar('ApexPredatorIL'),
-    games: [{ id: 'apex', rank: 'Master', roles: ['IGL', 'Fragger'] }],
+    games: [{ id: 'apex', rank: 'Master', roles: ['IGL', 'Fragger'], stats: { rp: '15,200' } }],
     availability: ['Evening', 'Night'],
     playstyles: ['Competitive', 'Aggressive', 'IGL / Leader'],
     bio: 'Apex ranked only. Looking for a permanent trio. Hit Predator twice.',

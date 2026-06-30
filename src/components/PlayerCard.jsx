@@ -1,4 +1,4 @@
-import { getGame } from '../data/games.js'
+import { getGame, getStats } from '../data/games.js'
 import RankBadge from './RankBadge.jsx'
 import './PlayerCard.css'
 
@@ -56,6 +56,11 @@ export default function PlayerCard({ player, verdict = null }) {
                   </span>
                   {g.roles?.length > 0 && (
                     <div className="muted" style={{ fontSize: 12, marginTop: 4 }}>🎭 {g.roles.join(' · ')}</div>
+                  )}
+                  {g.stats && Object.values(g.stats).some(Boolean) && (
+                    <div className="muted" style={{ fontSize: 12, marginTop: 2 }}>
+                      📊 {getStats(g.id).filter((s) => g.stats[s.key]).map((s) => `${s.label} ${g.stats[s.key]}`).join(' · ')}
+                    </div>
                   )}
                 </div>
                 <RankBadge rank={g.rank} size="sm" />

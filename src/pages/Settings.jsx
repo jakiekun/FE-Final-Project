@@ -79,8 +79,8 @@ export default function Settings() {
 
       <section className="profile-section">
         <h3>Support</h3>
-        <button className="list-item"><span>❓ Help &amp; FAQ</span><span className="muted">›</span></button>
-        <button className="list-item"><span>📄 Terms &amp; Privacy</span><span className="muted">›</span></button>
+        <button className="list-item" onClick={() => navigate('/help')}><span>❓ Help &amp; FAQ</span><span className="muted">›</span></button>
+        <button className="list-item" onClick={() => navigate('/terms')}><span>📄 Terms &amp; Privacy</span><span className="muted">›</span></button>
       </section>
 
       <button className="list-item list-item__danger mt-3" onClick={handleLogout}>

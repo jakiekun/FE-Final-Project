@@ -403,6 +403,21 @@ ul { list-style: none; }
   scroll-snap-type: x proximity;
 }
 
+/* generic modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(5, 7, 15, 0.82);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fade-in 0.2s ease;
+}
+.modal { width: 100%; max-width: 380px; animation: pop-in 0.25s ease both; }
+
 /* empty state */
 .empty-state {
   text-align: center;

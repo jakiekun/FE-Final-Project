@@ -41,6 +41,26 @@ export const GAMES = [
     ranks: ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Heroic', 'Grandmaster'] },
   { id: 'brawlstars', name: 'Brawl Stars', emoji: '⭐', color: '#ffcc00',
     ranks: ['Bronze', 'Silver', 'Gold', 'Diamond', 'Mythic', 'Legendary', 'Masters', 'Pro'] },
+  { id: 'deadlock', name: 'Deadlock', emoji: '🔱', color: '#b06b3a',
+    ranks: ['Initiate', 'Seeker', 'Alchemist', 'Arcanist', 'Ritualist', 'Emissary', 'Archon', 'Oracle', 'Phantom', 'Ascendant', 'Eternus'] },
+  { id: 'thefinals', name: 'The Finals', emoji: '💰', color: '#d4145a',
+    ranks: ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Ruby'] },
+  { id: 'halo', name: 'Halo Infinite', emoji: '🟢', color: '#2b8a3e',
+    ranks: ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Onyx'] },
+  { id: 'wildrift', name: 'LoL: Wild Rift', emoji: '📲', color: '#c8aa6e',
+    ranks: ['Iron', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Emerald', 'Diamond', 'Master', 'Grandmaster', 'Challenger'] },
+  { id: 'sc2', name: 'StarCraft II', emoji: '🚀', color: '#1e5fbf',
+    ranks: ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Master', 'Grandmaster'] },
+  { id: 'smash', name: 'Smash Bros Ultimate', emoji: '🕹️', color: '#e60012',
+    ranks: ['Beginner', 'Intermediate', 'Advanced', 'Elite', 'Pro'] },
+  { id: 'mk1', name: 'Mortal Kombat 1', emoji: '🐉', color: '#e0a000',
+    ranks: ['Apprentice', 'Novice', 'Warrior', 'Elder', 'Demigod', 'God'] },
+  { id: 'naraka', name: 'Naraka: Bladepoint', emoji: '🗡️', color: '#9b59b6',
+    ranks: ['Rookie', 'Novice', 'Adept', 'Expert', 'Master', 'Grandmaster'] },
+  { id: 'nba2k', name: 'NBA 2K', emoji: '🏀', color: '#c8102e',
+    ranks: ['Rookie', 'Pro', 'All-Star', 'Superstar', 'Legend'] },
+  { id: 'clashroyale', name: 'Clash Royale', emoji: '👑', color: '#3aa0ff',
+    ranks: ['Challenger', 'Master', 'Champion', 'Grand Champion', 'Royal Champion', 'Ultimate Champion'] },
 ]
 
 // In-game roles / positions per game (researched).
@@ -58,6 +78,37 @@ export const GAME_ROLES = {
   marvelrivals: ['Vanguard (Tank)', 'Duelist (DPS)', 'Strategist (Support)'],
   honorofkings: ['Jungle', 'Mid', 'Clash Lane', 'Farm Lane', 'Roam'],
   overwatch_mlbb: ['Gold Lane', 'EXP Lane', 'Mid Lane', 'Jungle', 'Roam'],
+  deadlock: ['Carry', 'Mid', 'Solo Lane', 'Support', 'Jungle'],
+  thefinals: ['Light', 'Medium', 'Heavy'],
+  halo: ['Slayer', 'Objective', 'Support', 'IGL'],
+  wildrift: ['Baron Lane', 'Jungle', 'Mid', 'Dragon Lane', 'Support'],
+  nba2k: ['Point Guard', 'Shooting Guard', 'Small Forward', 'Power Forward', 'Center'],
+}
+
+// Extra game-specific rating systems (each game has its own "thing").
+export const GAME_STATS = {
+  dota2: [{ key: 'mmr', label: 'MMR', placeholder: 'e.g. 5400' }],
+  cs2: [
+    { key: 'premier', label: 'Premier Rating', placeholder: 'e.g. 18,500' },
+    { key: 'faceit', label: 'FACEIT Level', placeholder: '1–10' },
+  ],
+  lol: [{ key: 'lp', label: 'LP', placeholder: 'e.g. 75' }],
+  valorant: [
+    { key: 'rr', label: 'RR', placeholder: 'e.g. 42' },
+    { key: 'peak', label: 'Peak Rank', placeholder: 'e.g. Immortal 2' },
+  ],
+  apex: [{ key: 'rp', label: 'RP', placeholder: 'e.g. 12,500' }],
+  rocketleague: [{ key: 'mmr', label: 'MMR', placeholder: 'e.g. 1350' }],
+  r6siege: [{ key: 'mmr', label: 'MMR', placeholder: 'e.g. 3200' }],
+  overwatch2: [{ key: 'sr', label: 'SR / Division', placeholder: 'e.g. Diamond 3' }],
+  pubg: [{ key: 'rp', label: 'RP', placeholder: 'e.g. 4200' }],
+  tft: [{ key: 'lp', label: 'LP', placeholder: 'e.g. 50' }],
+  cod: [{ key: 'sr', label: 'Skill Rating', placeholder: 'e.g. 5500' }],
+  fortnite: [{ key: 'points', label: 'Ranked Points', placeholder: 'e.g. 1200' }],
+  sf6: [{ key: 'lp', label: 'League Points', placeholder: 'e.g. 18,000' }],
+  tekken8: [{ key: 'tp', label: 'Tekken Prowess', placeholder: 'e.g. 250,000' }],
+  deadlock: [{ key: 'mmr', label: 'MMR', placeholder: 'e.g. 4200' }],
+  wildrift: [{ key: 'lp', label: 'LP', placeholder: 'e.g. 60' }],
 }
 
 export const PLAYSTYLES = [
@@ -69,14 +120,15 @@ export const TIME_SLOTS = ['Morning', 'Noon', 'Afternoon', 'Evening', 'Night']
 
 export const getGame = (id) => GAMES.find((g) => g.id === id)
 export const getRoles = (id) => GAME_ROLES[id] || []
+export const getStats = (id) => GAME_STATS[id] || []
 
 // --------------------------------------------------------------------------
 // Rank metadata — tier color, fallback icon, and a 0–10 tier level used to
 // render game-like medal emblems (wings/stars scale with tier).
 // --------------------------------------------------------------------------
 const RANK_RULES = [
-  { re: /(radiant|challenger|unreal|conqueror|one above all|supersonic|top 250|top 500|global elite|eternity|glory|god of destruction|mythical|elite$)/i, color: '#ffd24d', icon: '✨', tier: 10 },
-  { re: /(immortal|grandmaster|celestial|legend|tekken god|heroic|king)/i, color: '#ff2d9b', icon: '👑', tier: 9 },
+  { re: /(radiant|challenger|unreal|conqueror|one above all|supersonic|top 250|top 500|global elite|eternity|glory|god of destruction|mythical|ruby|onyx|eternus|ultimate champion|royal champion|superstar|elite$)/i, color: '#ffd24d', icon: '✨', tier: 10 },
+  { re: /(immortal|grandmaster|celestial|legend|tekken god|heroic|king|demigod|phantom|\bgod\b)/i, color: '#ff2d9b', icon: '👑', tier: 9 },
   { re: /(master|supreme|champion|mythic|emperor)/i, color: '#a855f7', icon: '🔮', tier: 8 },
   { re: /(ascendant|divine|crimson|fujin|epic)/i, color: '#14b8a6', icon: '🔺', tier: 7 },
   { re: /(diamond|dmg|iridescent|tekken king)/i, color: '#6bd6ff', icon: '💎', tier: 6 },

@@ -1,12 +1,13 @@
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Logo from '../components/Logo.jsx'
 
 export default function Accessibility() {
+  const navigate = useNavigate()
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: 'var(--space-3) var(--space-2) var(--space-6)' }}>
       <div className="spread" style={{ marginBottom: 24 }}>
         <Logo size={32} variant="mark" />
-        <Link className="btn btn--ghost" to="/">← Home</Link>
+        <button className="btn btn--ghost" onClick={() => navigate(-1)}>← Back</button>
       </div>
 
       <h1 className="neon-text" style={{ fontSize: 30, marginBottom: 8 }}>Accessibility Statement</h1>

@@ -23,6 +23,8 @@ import Settings from './pages/Settings.jsx'
 import RatePlayer from './pages/RatePlayer.jsx'
 import Admin from './pages/Admin.jsx'
 import Accessibility from './pages/Accessibility.jsx'
+import Help from './pages/Help.jsx'
+import Terms from './pages/Terms.jsx'
 import NotFound from './pages/NotFound.jsx'
 
 export default function App() {
@@ -38,6 +40,8 @@ export default function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/accessibility" element={<Accessibility />} />
+      <Route path="/help" element={<Help />} />
+      <Route path="/terms" element={<Terms />} />
 
       {/* ---------- Onboarding (auth, no profile yet) ---------- */}
       <Route

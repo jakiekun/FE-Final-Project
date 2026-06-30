@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PlayerCard from '../components/PlayerCard.jsx'
 import SectionTabs from '../components/SectionTabs.jsx'
+import ReportDialog from '../components/ReportDialog.jsx'
 import { MOCK_PLAYERS } from '../data/mockPlayers.js'
 import './Swipe.css'
 
@@ -13,6 +14,7 @@ export default function Swipe() {
   const [drag, setDrag] = useState({ x: 0, active: false })
   const [flyOut, setFlyOut] = useState(null) // 'left' | 'right' | null
   const [match, setMatch] = useState(null)
+  const [reporting, setReporting] = useState(false)
   const [showHint, setShowHint] = useState(() => !localStorage.getItem('duoz.swipehint'))
   const startX = useRef(0)
 
@@ -95,8 +97,15 @@ export default function Swipe() {
       <SectionTabs />
       <div className="swipe__header">
         <h1 className="page-title" style={{ marginBottom: 0 }}>Discover players</h1>
-        <span className="swipe__filter">⚙️ All games</span>
+        <div className="row" style={{ gap: 8 }}>
+          {current && (
+            <button className="btn btn--ghost" style={{ padding: 4 }} onClick={() => setReporting(true)} aria-label="Report player">⚠️</button>
+          )}
+          <span className="swipe__filter">⚙️ All games</span>
+        </div>
       </div>
+
+      {reporting && current && <ReportDialog name={current.name} onClose={() => setReporting(false)} />}
 
       <div className="deck">
         {!current ? (
@@ -158,19 +167,22 @@ export default function Swipe() {
       )}
 
       {match && (
-        <div className="match-overlay">
-          <h1 className="neon-text animate-pop">It’s a Match! 🎮</h1>
-          <p className="muted">You and {match.name} liked each other</p>
+        <div className="match-overlay" role="dialog" aria-modal="true" aria-label="Match found">
+          <div className="match-found__tag">DUOZ // MATCHMAKING</div>
+          <h1 className="neon-text animate-pop match-found__title">MATCH FOUND</h1>
+          <p className="match-found__sub">Duo secured with <b>{match.name}</b> — queue up and climb 📈</p>
           <div className="match-overlay__avatars animate-pop">
             <img src={`https://api.dicebear.com/9.x/bottts-neutral/svg?seed=me&backgroundColor=151a2e`} alt="You" />
+            <span className="match-found__link" aria-hidden="true">⚡</span>
             <img src={match.avatar} alt={match.name} />
           </div>
-          <div className="stack full" style={{ maxWidth: 280 }}>
+          <div className="match-found__ready">✓ PARTY FORMED</div>
+          <div className="stack full" style={{ maxWidth: 300 }}>
             <button className="btn btn--primary btn--lg" onClick={() => navigate('/app/chat')}>
-              Send a message 💬
+              Open comms 💬
             </button>
             <button className="btn btn--secondary" onClick={() => setMatch(null)}>
-              Keep swiping
+              Keep scouting 🔭
             </button>
           </div>
         </div>

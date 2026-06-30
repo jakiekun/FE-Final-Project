@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getMatch } from '../data/mockMatches.js'
+import ReportDialog from '../components/ReportDialog.jsx'
 import './app.css'
 
 const REPLIES = [
@@ -17,6 +18,7 @@ export default function Chat() {
 
   const [messages, setMessages] = useState(match?.messages ?? [])
   const [text, setText] = useState('')
+  const [showReport, setShowReport] = useState(false)
   const bodyRef = useRef(null)
 
   useEffect(() => {
@@ -65,7 +67,10 @@ export default function Chat() {
           </div>
         </div>
         <button className="btn btn--ghost" onClick={() => navigate(`/app/rate/${match.id}`)}>★ Rate</button>
+        <button className="btn btn--ghost" style={{ padding: 4 }} onClick={() => setShowReport(true)} aria-label="Report player">⚠️</button>
       </header>
+
+      {showReport && <ReportDialog name={match.player.name} onClose={() => setShowReport(false)} />}
 
       <div className="chat-body" ref={bodyRef}>
         <div className="text-center muted" style={{ fontSize: 12, margin: '8px 0' }}>

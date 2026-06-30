@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
-import { getGame, GAMES } from '../data/games.js'
+import { getGame, GAMES, getStats } from '../data/games.js'
 import { PLATFORMS } from '../data/platforms.js'
 import RankBadge from '../components/RankBadge.jsx'
 import './app.css'
@@ -13,6 +13,8 @@ export default function Profile() {
 
   const [clips, setClips] = useState(p?.gameplays ?? [])
   const [connections, setConnections] = useState(p?.connections ?? {})
+  const [bio, setBio] = useState(p?.bio ?? '')
+  const [bioSaved, setBioSaved] = useState(false)
   const [adding, setAdding] = useState(false)
   const [form, setForm] = useState({ title: '', game: GAMES[0].id, url: '' })
 
@@ -37,6 +39,11 @@ export default function Profile() {
     const next = { ...connections, [id]: !connections[id] }
     setConnections(next)
     persist({ connections: next })
+  }
+  const saveBio = () => {
+    persist({ bio: bio.trim() })
+    setBioSaved(true)
+    setTimeout(() => setBioSaved(false), 1600)
   }
 
   const handleLogout = () => {
@@ -66,6 +73,20 @@ export default function Profile() {
       </button>
 
       <section className="profile-section">
+        <h3>📝 About me</h3>
+        <textarea
+          className="textarea"
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
+          placeholder="Tell players about your vibe, goals and schedule…"
+          maxLength={240}
+        />
+        <button className="btn btn--secondary btn--block mt-1" onClick={saveBio}>
+          {bioSaved ? 'Saved ✓' : 'Save about me'}
+        </button>
+      </section>
+
+      <section className="profile-section">
         <h3>Games &amp; Ranks</h3>
         {p?.games?.length ? p.games.map((g) => {
           const game = getGame(g.id)
@@ -75,6 +96,11 @@ export default function Profile() {
                 <span className="game-row__name"><span style={{ fontSize: 18 }}>{game?.emoji}</span>{game?.name}</span>
                 {g.roles?.length > 0 && (
                   <div className="muted" style={{ fontSize: 12, marginTop: 4 }}>🎭 {g.roles.join(' · ')}</div>
+                )}
+                {g.stats && Object.values(g.stats).some(Boolean) && (
+                  <div className="muted" style={{ fontSize: 12, marginTop: 2 }}>
+                    📊 {getStats(g.id).filter((s) => g.stats[s.key]).map((s) => `${s.label} ${g.stats[s.key]}`).join(' · ')}
+                  </div>
                 )}
               </div>
               <RankBadge rank={g.rank} size="sm" />
