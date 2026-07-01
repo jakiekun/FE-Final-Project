@@ -7,6 +7,11 @@ import './PlayerCard.css'
 export default function PlayerCard({ player, verdict = null }) {
   if (!player) return null
 
+  const vibe = player.vibe ?? Math.round((player.rating ?? 4.5) * 20)
+  const vibeLabel = vibe >= 90 ? 'Wholesome 🌟' : vibe >= 75 ? 'Chill 😎' : vibe >= 60 ? 'Solid 👍' : vibe >= 40 ? 'Mixed ⚠️' : 'Toxic ☢️'
+  const vibeColor = vibe >= 75 ? 'var(--color-success)' : vibe >= 55 ? '#ffcf4d' : 'var(--color-error)'
+  const toxicity = vibe >= 90 ? 'Very Low' : vibe >= 75 ? 'Low' : vibe >= 55 ? 'Medium' : 'High'
+
   return (
     <article className="player-card">
       <div
@@ -67,6 +72,25 @@ export default function PlayerCard({ player, verdict = null }) {
               </div>
             )
           })}
+        </section>
+
+        <section>
+          <div className="player-card__section-title">Vibe Score</div>
+          <div className="vibe">
+            <div className="vibe__head">
+              <span className="vibe__score" style={{ color: vibeColor }}>{vibe}</span>
+              <span className="vibe__label">{vibeLabel}</span>
+              <span className="vibe__tox">🧪 Toxicity: {toxicity}</span>
+            </div>
+            <div className="vibe__bar">
+              <div className="vibe__fill" style={{ width: `${vibe}%`, color: vibeColor, background: vibeColor }} />
+            </div>
+            {player.commends?.length > 0 && (
+              <div className="chip-group" style={{ marginTop: 10 }}>
+                {player.commends.map((c) => <span className="chip" key={c}>🏅 {c}</span>)}
+              </div>
+            )}
+          </div>
         </section>
 
         <section>

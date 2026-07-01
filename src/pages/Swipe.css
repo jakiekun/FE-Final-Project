@@ -31,7 +31,10 @@
 .deck__card {
   position: absolute;
   inset: 0;
-  touch-action: none;
+  touch-action: pan-y;          /* let the browser scroll vertically; we handle horizontal swipe */
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   will-change: transform;
 }
 /* stacked card peeking behind */
@@ -39,6 +42,7 @@
   transform: scale(0.95) translateY(14px);
   filter: brightness(0.8);
   pointer-events: none;
+  overflow: hidden;
 }
 
 .swipe__actions {

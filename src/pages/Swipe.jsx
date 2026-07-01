@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PlayerCard from '../components/PlayerCard.jsx'
 import SectionTabs from '../components/SectionTabs.jsx'
-import ReportDialog from '../components/ReportDialog.jsx'
 import { MOCK_PLAYERS } from '../data/mockPlayers.js'
 import './Swipe.css'
 
@@ -14,7 +13,6 @@ export default function Swipe() {
   const [drag, setDrag] = useState({ x: 0, active: false })
   const [flyOut, setFlyOut] = useState(null) // 'left' | 'right' | null
   const [match, setMatch] = useState(null)
-  const [reporting, setReporting] = useState(false)
   const [showHint, setShowHint] = useState(() => !localStorage.getItem('duoz.swipehint'))
   const startX = useRef(0)
 
@@ -33,7 +31,8 @@ export default function Swipe() {
     if (flyOut) return
     startX.current = e.clientX
     setDrag({ x: 0, active: true })
-    e.currentTarget.setPointerCapture?.(e.pointerId)
+    // capture only for mouse — on touch, leave it free so vertical scrolling works
+    if (e.pointerType === 'mouse') e.currentTarget.setPointerCapture?.(e.pointerId)
   }
   const onPointerMove = (e) => {
     if (!drag.active) return
@@ -97,12 +96,7 @@ export default function Swipe() {
       <SectionTabs />
       <div className="swipe__header">
         <h1 className="page-title" style={{ marginBottom: 0 }}>Discover players</h1>
-        {current && (
-          <button className="btn btn--ghost" style={{ padding: 4 }} onClick={() => setReporting(true)} aria-label="Report player">⚠️ Report</button>
-        )}
       </div>
-
-      {reporting && current && <ReportDialog name={current.name} onClose={() => setReporting(false)} />}
 
       <div className="deck">
         {!current ? (

@@ -30,14 +30,18 @@ export default function Onboarding() {
   const [playstyles, setPlaystyles] = useState([])
   const [bio, setBio] = useState('')
   const [connected, setConnected] = useState({})
+  const [showGrid, setShowGrid] = useState(true)
 
   const toggleGame = (id) => {
+    const isAdding = !(id in games)
     setGames((prev) => {
       const next = { ...prev }
       if (id in next) delete next[id]
       else next[id] = getGame(id).ranks[0]
       return next
     })
+    // collapse the big list once a game is picked, so the details form is front & center
+    if (isAdding) setShowGrid(false)
   }
   const setRank = (id, rank) => setGames((prev) => ({ ...prev, [id]: rank }))
   const toggleRole = (gid, role) =>
@@ -108,30 +112,44 @@ export default function Onboarding() {
             <h2>Which games do you play?</h2>
             <p className="onb__hint">Search and pick your games, then set rank &amp; role in each.</p>
 
-            <input
-              className="input"
-              style={{ marginBottom: 14 }}
-              placeholder="🔍 Search games…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+            {showGrid ? (
+              <>
+                <input
+                  className="input"
+                  style={{ marginBottom: 14 }}
+                  placeholder="🔍 Search games…"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
 
-            <div className="game-grid">
-              {filteredGames.map((g) => (
-                <div
-                  key={g.id}
-                  className={'game-tile' + (g.id in games ? ' is-selected' : '')}
-                  onClick={() => toggleGame(g.id)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => e.key === 'Enter' && toggleGame(g.id)}
-                >
-                  <span className="emoji">{g.emoji}</span>
-                  {g.name}
+                <div className="game-grid">
+                  {filteredGames.map((g) => (
+                    <div
+                      key={g.id}
+                      className={'game-tile' + (g.id in games ? ' is-selected' : '')}
+                      onClick={() => toggleGame(g.id)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === 'Enter' && toggleGame(g.id)}
+                    >
+                      <span className="emoji">{g.emoji}</span>
+                      {g.name}
+                    </div>
+                  ))}
+                  {filteredGames.length === 0 && <p className="muted">No games match “{search}”.</p>}
                 </div>
-              ))}
-              {filteredGames.length === 0 && <p className="muted">No games match “{search}”.</p>}
-            </div>
+
+                {Object.keys(games).length > 0 && (
+                  <button className="btn btn--secondary btn--block" style={{ marginBottom: 16 }} onClick={() => setShowGrid(false)}>
+                    Done — set details ↓
+                  </button>
+                )}
+              </>
+            ) : (
+              <button className="btn btn--secondary btn--block" style={{ marginBottom: 16 }} onClick={() => setShowGrid(true)}>
+                ＋ Add / edit games ({Object.keys(games).length})
+              </button>
+            )}
 
             {Object.keys(games).map((id) => {
               const g = getGame(id)

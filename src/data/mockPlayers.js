@@ -6,7 +6,8 @@ const avatar = (seed) => `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=$
 export const MOCK_PLAYERS = [
   {
     id: 'p1', name: 'NovaStrike', realName: 'Daniel', age: 19, region: 'Haifa',
-    online: true, verified: true, rating: 4.8, avatar: avatar('NovaStrike'),
+    online: true, verified: true, rating: 4.8, vibe: 92, commends: ['Friendly', 'Good comms', 'Reliable'],
+    avatar: avatar('NovaStrike'),
     games: [
       { id: 'valorant', rank: 'Diamond', roles: ['Duelist', 'Entry'], stats: { rr: '58', peak: 'Immortal 1' } },
       { id: 'cs2', rank: 'Legendary Eagle', roles: ['AWPer'], stats: { premier: '19,200', faceit: '9' } },
@@ -17,7 +18,8 @@ export const MOCK_PLAYERS = [
   },
   {
     id: 'p2', name: 'QuietAim', realName: 'Maya', age: 24, region: 'Tel Aviv',
-    online: false, verified: true, rating: 4.9, avatar: avatar('QuietAim'),
+    online: false, verified: true, rating: 4.9, vibe: 97, commends: ['Wholesome', 'Chill', 'Positive'],
+    avatar: avatar('QuietAim'),
     games: [{ id: 'valorant', rank: 'Platinum', roles: ['Sentinel', 'Controller'] }],
     availability: ['Afternoon', 'Evening'],
     playstyles: ['Casual', 'Support', 'Quiet & Focused'],
@@ -25,7 +27,8 @@ export const MOCK_PLAYERS = [
   },
   {
     id: 'p3', name: 'MidOrFeed', realName: 'Yoav', age: 21, region: "Be'er Sheva",
-    online: true, verified: false, rating: 4.2, avatar: avatar('MidOrFeed'),
+    online: true, verified: false, rating: 4.2, vibe: 78, commends: ['Good comms', 'Shot-caller'],
+    avatar: avatar('MidOrFeed'),
     games: [
       { id: 'lol', rank: 'Emerald', roles: ['Mid'], stats: { lp: '64' } },
       { id: 'dota2', rank: 'Ancient', roles: ['Mid (2)'], stats: { mmr: '5400' } },
@@ -36,7 +39,8 @@ export const MOCK_PLAYERS = [
   },
   {
     id: 'p4', name: 'ApexPredatorIL', realName: 'Rotem', age: 27, region: 'Jerusalem',
-    online: true, verified: true, rating: 4.6, avatar: avatar('ApexPredatorIL'),
+    online: true, verified: true, rating: 4.6, vibe: 85, commends: ['Reliable', 'Shot-caller', 'Focused'],
+    avatar: avatar('ApexPredatorIL'),
     games: [{ id: 'apex', rank: 'Master', roles: ['IGL', 'Fragger'], stats: { rp: '15,200' } }],
     availability: ['Evening', 'Night'],
     playstyles: ['Competitive', 'Aggressive', 'IGL / Leader'],
@@ -44,18 +48,20 @@ export const MOCK_PLAYERS = [
   },
   {
     id: 'p5', name: 'ChillFragger', realName: 'Eden', age: 18, region: 'Netanya',
-    online: false, verified: false, rating: 4.0, avatar: avatar('ChillFragger'),
-    games: [{ id: 'cs2', rank: 'Gold Nova', roles: ['Rifler', 'Support'] }],
+    online: false, verified: false, rating: 4.0, vibe: 88, commends: ['Chill', 'Patient', 'Friendly'],
+    avatar: avatar('ChillFragger'),
+    games: [{ id: 'cs2', rank: 'Gold Nova', roles: ['Rifler', 'Support'], stats: { faceit: '4' } }],
     availability: ['Morning', 'Noon'],
     playstyles: ['Casual', 'Social & Chatty'],
     bio: 'Fairly new, want to improve with someone patient. No toxicity.',
   },
   {
     id: 'p6', name: 'BuildGodZ', realName: 'Itay', age: 22, region: 'Rishon LeZion',
-    online: true, verified: true, rating: 4.7, avatar: avatar('BuildGodZ'),
+    online: true, verified: true, rating: 4.7, vibe: 90, commends: ['Reliable', 'Positive', 'Grinder'],
+    avatar: avatar('BuildGodZ'),
     games: [
-      { id: 'fortnite', rank: 'Champion' },
-      { id: 'valorant', rank: 'Ascendant', roles: ['Initiator'] },
+      { id: 'fortnite', rank: 'Champion', stats: { points: '1,850' } },
+      { id: 'valorant', rank: 'Ascendant', roles: ['Initiator'], stats: { rr: '31' } },
     ],
     availability: ['Afternoon', 'Evening', 'Night'],
     playstyles: ['Competitive', 'Ranked Grind'],
