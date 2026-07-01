@@ -3,7 +3,7 @@ import './SectionTabs.css'
 
 const tabs = [
   { to: '/app/discover', label: 'Discover', icon: '🎯' },
-  { to: '/app/coaching', label: 'Coaching', icon: '🎓' },
+  { to: '/app/coaching', label: 'Academy', icon: '🎓' },
   { to: '/app/esports', label: 'Esports', icon: '🏆' },
   { to: '/app/tournaments', label: 'Tournaments', icon: '📅' },
 ]
