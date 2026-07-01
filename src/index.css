@@ -617,3 +617,52 @@ html.a11y-contrast {
 html.a11y-contrast a,
 html.a11y-contrast .neon-text { text-decoration: underline; }
 html.a11y-contrast .btn--secondary { border-width: 2px; }
+
+/* ============================================================
+   COLOR THEMES — neutral (default) / dark / light
+   ============================================================ */
+.theme-toggle { display: inline-flex; gap: 4px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-full); padding: 4px; }
+.theme-toggle__btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; border: none; border-radius: var(--radius-full);
+  background: transparent; color: var(--color-text-dim); font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.theme-toggle__btn.is-active { background: var(--color-primary); color: #04221d; box-shadow: var(--glow-primary); }
+.theme-toggle--compact .theme-toggle__btn { padding: 7px 9px; font-size: 15px; }
+
+/* ---- DARK: deeper surfaces, keep the neon + background vibe ---- */
+html.theme-dark {
+  --color-bg: #04060c;
+  --color-surface: #0b0f1d;
+  --color-surface-2: #11162a;
+  --color-text: #dce2ef;
+  --color-text-dim: #7c86a4;
+  --color-border: #1b2340;
+}
+
+/* ---- LIGHT: bright surfaces, dark text, contrast-safe accents ---- */
+html.theme-light {
+  --color-bg: #eef1f8;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1f4fb;
+  --color-text: #131a2c;
+  --color-text-dim: #57607c;
+  --color-border: #d4dbea;
+  --color-primary: #00b6a0;
+  --color-secondary: #8a3ff0;
+  --color-accent: #e01f86;
+  --color-success: #10b39a;
+  --glow-primary: 0 0 12px rgba(0, 182, 160, 0.28);
+  --glow-secondary: 0 0 12px rgba(138, 63, 240, 0.28);
+  --glow-accent: 0 0 14px rgba(224, 31, 134, 0.3);
+  --shadow-card: 0 8px 24px rgba(60, 70, 110, 0.14);
+  color-scheme: light;
+}
+html.theme-light body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(0, 182, 160, 0.1), transparent 42%),
+    radial-gradient(circle at 88% 92%, rgba(224, 31, 134, 0.08), transparent 42%);
+}
+html.theme-light .btn--primary { color: #ffffff; }
+html.theme-light .btn--accent { color: #ffffff; }
+html.theme-light .theme-toggle__btn.is-active { color: #ffffff; }

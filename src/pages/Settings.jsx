@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import { loadA11y, saveA11y } from '../lib/a11y.js'
 import { supabase } from '../lib/supabaseClient.js'
+import ThemeToggle from '../components/ThemeToggle.jsx'
 import './app.css'
 
 function Toggle({ on, onClick }) {
@@ -52,6 +53,11 @@ export default function Settings() {
         <button className="btn btn--ghost" style={{ padding: 4 }} onClick={() => navigate('/app/profile')}>←</button>
         <h1 className="page-title" style={{ marginBottom: 0 }}>Settings</h1>
       </div>
+
+      <section className="profile-section">
+        <h3>🎨 Appearance</h3>
+        <ThemeToggle />
+      </section>
 
       <section className="profile-section">
         <h3>Notifications &amp; Privacy</h3>

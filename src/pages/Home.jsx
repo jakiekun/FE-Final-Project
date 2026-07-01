@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import Logo from '../components/Logo.jsx'
 import Reveal from '../components/Reveal.jsx'
 import HowItWorks from '../components/HowItWorks.jsx'
+import ThemeToggle from '../components/ThemeToggle.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import './Home.css'
 
@@ -28,7 +29,8 @@ export default function Home() {
       <div className="home">
         <nav className="home__nav">
           <Logo size={36} variant="mark" />
-          <div className="row" style={{ gap: 8 }}>
+          <div className="row" style={{ gap: 8, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+            <ThemeToggle compact />
             {isAuthed ? (
               <Link className="btn btn--primary" to="/app/discover">Open app</Link>
             ) : (
