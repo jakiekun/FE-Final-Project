@@ -107,6 +107,41 @@
 .cmd-item code { color: var(--color-primary); font-weight: 700; min-width: 92px; }
 .cmd-item small { color: var(--color-text-dim); font-size: 12px; }
 
+/* ---- GIF picker ---- */
+.gif-panel {
+  position: absolute;
+  bottom: 100%;
+  left: var(--space-2);
+  right: var(--space-2);
+  margin-bottom: 8px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius);
+  box-shadow: var(--glow-primary), var(--shadow-card);
+  padding: 10px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.gif-panel__head { display: flex; gap: 6px; align-items: center; }
+.gif-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.gif-chips::-webkit-scrollbar { display: none; }
+.gif-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+.gif-cell { border: none; padding: 0; background: var(--color-surface-2); border-radius: 8px; overflow: hidden; cursor: pointer; aspect-ratio: 1; }
+.gif-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gif-cell:hover { outline: 2px solid var(--color-primary); }
+.gif-empty { grid-column: 1 / -1; text-align: center; color: var(--color-text-dim); padding: 24px; font-size: 14px; }
+.gif-powered { text-align: center; font-size: 10px; color: var(--color-text-dim); letter-spacing: 1px; }
+
+.gif-msg img { border-radius: 12px; display: block; width: 100%; max-width: 220px; }
+
 /* ---- themes (applied on .chat-screen) ---- */
 .chat-theme-fantasy .chat-body { background: radial-gradient(circle at 50% 0%, rgba(120, 80, 40, 0.25), transparent 60%), #140f0a; }
 .chat-theme-fantasy .bubble--me { background: rgba(230, 179, 74, 0.16); border-color: rgba(230, 179, 74, 0.5); }

@@ -52,6 +52,15 @@
   max-width: 540px;
   margin: 0 auto var(--space-4);
 }
+.hero p.hero__tagline {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(16px, 4.2vw, 21px);
+  color: var(--color-text);
+  max-width: none;
+  margin: 0 auto var(--space-3);
+}
+
 .hero__cta { display: flex; gap: var(--space-1); justify-content: center; flex-wrap: wrap; }
 
 .stats {

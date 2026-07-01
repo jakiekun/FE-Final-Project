@@ -44,10 +44,11 @@ export default function Home() {
           <div className="hero__logo animate-pop">
             <Logo size={420} variant="full" to={null} />
           </div>
-          <span className="hero__badge animate-float">🎮 Your permanent duo is waiting</span>
+          <h1 className="hero__slogan">Are you done <span className="neon-text">solo queueing?</span></h1>
+          <p className="hero__tagline">Find your Player 2 — swipe, match, carry. 🎮</p>
           <p>
-            Duoz is a swipe app that matches competitive gamers — by game, verified rank
-            and playstyle. No random lobbies, no toxic teammates.
+            Duoz matches you with a duo by game, verified rank &amp; vibe.
+            No random lobbies, no toxic teammates.
           </p>
           <div className="hero__cta">
             <button className="btn btn--primary btn--lg" onClick={goApp}>Get started — free</button>
@@ -55,7 +56,7 @@ export default function Home() {
           </div>
 
           <div className="stats">
-            <div className="stat"><div className="stat__num">6</div><div className="stat__label">Games supported</div></div>
+            <div className="stat"><div className="stat__num">30</div><div className="stat__label">Games supported</div></div>
             <div className="stat"><div className="stat__num">100%</div><div className="stat__label">Verified ranks</div></div>
             <div className="stat"><div className="stat__num">0</div><div className="stat__label">Tolerance for toxicity</div></div>
           </div>

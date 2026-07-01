@@ -5,6 +5,7 @@ import { getGame, getRoles } from '../data/games.js'
 import { useAuth } from '../context/AuthContext.jsx'
 import ReportDialog from '../components/ReportDialog.jsx'
 import Confetti from '../components/Confetti.jsx'
+import GifPicker from '../components/GifPicker.jsx'
 import './app.css'
 import './chat.css'
 
@@ -66,6 +67,7 @@ export default function Chat() {
   const [theme, setTheme] = useState('cyberpunk')
   const [confetti, setConfetti] = useState(false)
   const [showReport, setShowReport] = useState(false)
+  const [showGif, setShowGif] = useState(false)
   const bodyRef = useRef(null)
 
   const realCount = messages.filter((m) => m.from === 'me' || m.from === 'them').length
@@ -209,6 +211,13 @@ export default function Chat() {
           </div>
         )
       }
+      case 'gif':
+        return (
+          <div className="bubble gif-msg" style={{ alignSelf: align(m.from), maxWidth: '72%', padding: 4, background: 'var(--color-surface)', borderColor: 'var(--color-border)' }} key={m.id}>
+            <img src={m.url} alt="gif" />
+            <span className="bubble__time" style={{ padding: '0 4px' }}>{m.time}</span>
+          </div>
+        )
       default:
         return (
           <div key={m.id} className={'bubble ' + (m.from === 'me' ? 'bubble--me' : 'bubble--them')}>
@@ -256,6 +265,7 @@ export default function Chat() {
 
       {/* quick actions */}
       <div className="chat-quick">
+        <button className="quick-chip" onClick={() => setShowGif((v) => !v)}>🎬 GIF</button>
         {SMART.map((s) => <button key={s} className="quick-chip" onClick={() => send(s)}>{s}</button>)}
         <button className="quick-chip quick-chip--sound" onClick={() => push({ type: 'reaction', from: 'me', emoji: '👋', label: 'Wave' })}>👋</button>
         {SOUNDS.map((s) => (
@@ -264,6 +274,12 @@ export default function Chat() {
       </div>
 
       <form className="chat-input" style={{ position: 'relative' }} onSubmit={(e) => { e.preventDefault(); send() }}>
+        {showGif && (
+          <GifPicker
+            onPick={(url) => { push({ type: 'gif', from: 'me', url }); setShowGif(false) }}
+            onClose={() => setShowGif(false)}
+          />
+        )}
         {showCmd && (
           <div className="cmd-menu">
             {COMMANDS.filter((c) => c.cmd.startsWith(text.toLowerCase()) || text === '/').map((c) => (
