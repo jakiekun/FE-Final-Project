@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import Logo from '../components/Logo.jsx'
 import Reveal from '../components/Reveal.jsx'
+import HowItWorks from '../components/HowItWorks.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import './Home.css'
 
@@ -60,6 +61,8 @@ export default function Home() {
           </div>
         </header>
 
+        <Reveal><HowItWorks /></Reveal>
+
         <Reveal stagger className="features">
           {features.map((f) => (
             <div className="card feature" key={f.title}>
@@ -69,21 +72,6 @@ export default function Home() {
             </div>
           ))}
         </Reveal>
-
-        <section className="steps">
-          <Reveal><h2>How it works</h2></Reveal>
-          <Reveal stagger>
-            {steps.map((s, i) => (
-              <div className="step" key={s.t}>
-                <div className="step__num">{i + 1}</div>
-                <div>
-                  <h4>{s.t}</h4>
-                  <p>{s.d}</p>
-                </div>
-              </div>
-            ))}
-          </Reveal>
-        </section>
 
         <Reveal>
           <section className="card card--glow home__final">
