@@ -1,94 +1,74 @@
-# 🎮 Duoz — Tinder for Gamers
+# 🎮 Duoz — Are you done solo queueing?
 
-> Find your perfect duo by game, verified rank, availability and vibe — no random lobbies, no toxic teammates.
+> Find your Player 2 — swipe, match, carry. A swipe app that matches competitive gamers by game, verified rank, availability & vibe. No random lobbies, no toxic teammates.
 
-Front-End final project. A swipe app that matches competitive gamers.
+**🔗 Live:** https://duoz.vercel.app · **Repo:** https://github.com/jakiekun/FE-Final-Project
 
-**Problem:** Competitive gamers struggle to find good teammates that match their rank, availability and playstyle.
-**Solution:** A swipe app that matches players — with real rank verification and toxic-player filtering.
+Front-End final project — an AI-guided full-stack app.
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack (as specified in Lesson 3 — System Design)
 
 | Layer | Technology |
 |------|-----------|
 | Frontend | **Vite + React** (JavaScript) |
 | Routing | React Router |
-| Backend + DB | Supabase _(wired up next)_ |
-| Deploy | **Vercel** (Frontend) + Supabase Cloud |
-| Source Control | GitHub |
+| Backend + DB | **Supabase** — PostgreSQL, Auth, Realtime, Row-Level Security |
+| Deploy | **Vercel** (auto-deploys) |
+| Source Control | **GitHub** |
+| Bot protection | Cloudflare Turnstile (env-gated) |
 
-> The frontend currently runs on **mock data** (`src/data/`). The backend layer (Supabase Auth, DB, Realtime) is connected next — see `src/lib/supabaseClient.js`.
+Auth, profiles, swipes, matches and chat run on **real Supabase** (with a safe mock fallback if env vars are absent, so the app never breaks).
 
 ## 🚀 Run locally
 
 ```bash
-npm install      # install dependencies
-npm run dev      # dev server -> http://localhost:5173
-npm run build    # production build (dist/)
-npm run preview  # preview the production build
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # production build
 ```
 
-## 🌐 Deployment (Vercel)
+Create a `.env` (see `.env.example`) with `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
+Database schema: run [`supabase/schema.sql`](supabase/schema.sql) in the Supabase SQL editor.
 
-The app is deployed on Vercel. Vercel auto-detects the Vite framework — no extra config is needed beyond `vercel.json` (an SPA rewrite so client-side routes work on refresh/deep links). Every push to `main` triggers an automatic production deploy.
-
-## 🗺️ Site Map
+## 🗺️ Screens (site map — Lesson 4)
 
 | Public | Authenticated | Admin |
 |--------|---------------|-------|
-| Home (landing) | Onboarding (build profile) | Admin (manage reports) |
-| Login | Swipe / Discover | |
-| Register | Matches | |
-| Forgot Password | Chat (list + thread) | |
-| | Profile · Settings · Rate Player | |
+| Home, Login, Register, Forgot Password, Accessibility, Help, Terms | Onboarding, Discover/Swipe, Matches, Chat, Profile, Settings, Rate Player, **Academy**, Esports, Tournaments | Admin (reports) |
 
-## 🎨 Design System
+## ✅ Requirements coverage
 
-Dark mode, neon / cyberpunk gaming aesthetic.
+**Must (Lesson 2):** ✔ player profile (games/rank/availability) · ✔ swipe & match · ✔ chat (real-time) · ✔ register & login (real auth).
+**Should:** ✔ player rating + report (anti-toxicity) · ✔ filters by game · ◐ rank verification UI for Riot/Steam/Battle.net/Epic/PSN/Xbox (real API is the next step).
 
-| Role | Color |
-|------|-------|
-| Primary | `#00E5C7` (cyan) |
-| Secondary | `#A855F7` (purple) |
-| Accent | `#FF2D9B` (magenta) |
-| Background | `#0B0E1A` |
-| Surface | `#151A2E` |
-| Text | `#E8ECF4` |
+## ✨ Beyond v1
 
-- **Fonts:** Orbitron (headings) · Space Grotesk (body)
-- **Spacing:** multiples of 8px · **Radius:** 16px (cards/buttons), 12px (inputs)
-- All tokens live in `src/index.css`. Motion utilities + the scroll-reveal system are defined there too.
+- **Real multiplayer:** users see each other in Discover, mutual likes create real matches, real-time chat.
+- **DUOZ Academy:** coaches (book with calendar + availability), guides, training camps (live watch party), graduate path, improvement graph, challenges, leaderboard.
+- **Esports** (30 orgs) · **Tournaments** (dates/countries) · **30 games** with in-game roles & stats (MMR/FACEIT/LP…).
+- **Chat:** conversation levels, slash commands (`/valorant`, `/roll`, `/poll`, `/gg`), GIFs, soundboard, themes, confetti.
+- **Accessibility** (WCAG 2.1 AA / IS 5568): keyboard nav, focus ring, skip link, reduce-motion & high-contrast, statement page.
+- **Color themes:** Neutral / Dark / Light · animated interactive background · animated neon logo · "How it works" demo.
 
-## 📁 Project Structure
+## 🎨 Design System (Lesson 5)
+
+Dark neon aesthetic. Primary `#00E5C7` · Secondary `#A855F7` · Accent `#FF2D9B` · Background `#0B0E1A`.
+Fonts: **Orbitron** (headings) + **Space Grotesk** (body). 8px spacing scale. All tokens in `src/index.css`.
+
+## 📁 Structure
 
 ```
 src/
-├── components/   # Logo, BottomNav, PlayerCard, AppLayout, ProtectedRoute, Reveal
-├── context/      # AuthContext (auth — mock, to be replaced by Supabase)
-├── data/         # games, mockPlayers, mockMatches
-├── lib/          # supabaseClient (placeholder)
-├── pages/        # all screens
-├── App.jsx       # routing
-├── main.jsx      # entry point
-└── index.css     # design tokens + motion system
+├── components/   UI: Logo, PlayerCard, BottomNav, GifPicker, BookingCalendar, ThemeToggle…
+├── context/      AuthContext (Supabase + mock fallback)
+├── lib/          supabaseClient, social (data layer), a11y, theme
+├── data/         games, mockPlayers, coaches, academy, esports, tournaments, platforms
+├── pages/        all screens
+└── index.css     design tokens + motion + themes
+supabase/schema.sql   profiles / swipes / matches / messages + RLS + realtime + triggers
 ```
-
-## ✅ Implemented features (v1 — Must)
-
-- [x] Sign up & log in (mock auth + protected routes)
-- [x] Build profile (Onboarding — games, rank, availability, playstyle)
-- [x] Swipe & match (drag + Like/Skip + Match screen)
-- [x] Chat between matched players
-- [x] Rate players after a match (anti-toxicity) + admin panel
-- [x] Animated neon brand logo + motion across the site
-
-## 🔜 Next steps
-
-- [ ] Connect Supabase (Auth, Database, Storage, Realtime chat)
-- [ ] Real rank verification via Riot API (Edge Function)
-- [ ] Advanced filters
 
 ---
 
