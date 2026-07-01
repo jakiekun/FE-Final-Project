@@ -72,8 +72,31 @@ create table if not exists public.matches (
   id         bigint generated always as identity primary key,
   user_a     uuid references auth.users (id) on delete cascade,
   user_b     uuid references auth.users (id) on delete cascade,
-  created_at timestamptz default now()
+  created_at timestamptz default now(),
+  unique (user_a, user_b)
 );
+-- ensure the unique pair exists on previously-created tables too
+create unique index if not exists matches_pair_uidx on public.matches (user_a, user_b);
+
+-- When two players like each other, create a match (runs with definer rights,
+-- so it can see both swipe rows despite RLS).
+create or replace function public.handle_swipe()
+returns trigger language plpgsql security definer set search_path = public as $$
+declare a uuid; b uuid;
+begin
+  if new.liked and exists (
+    select 1 from public.swipes s where s.swiper = new.target and s.target = new.swiper and s.liked
+  ) then
+    a := least(new.swiper, new.target);
+    b := greatest(new.swiper, new.target);
+    insert into public.matches (user_a, user_b) values (a, b) on conflict do nothing;
+  end if;
+  return new;
+end; $$;
+
+drop trigger if exists on_swipe_created on public.swipes;
+create trigger on_swipe_created after insert on public.swipes
+  for each row execute function public.handle_swipe();
 alter table public.matches enable row level security;
 drop policy if exists "users see own matches" on public.matches;
 create policy "users see own matches"

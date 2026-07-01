@@ -1,15 +1,33 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MOCK_MATCHES } from '../data/mockMatches.js'
+import { useAuth } from '../context/AuthContext.jsx'
+import { fetchMatches } from '../lib/social.js'
 import './app.css'
 
 export default function ChatList() {
+  const { user } = useAuth()
+  const [list, setList] = useState(null)
+
+  useEffect(() => {
+    let active = true
+    fetchMatches(user?.id).then((real) => { if (active) setList(real === null ? MOCK_MATCHES : real) })
+    return () => { active = false }
+  }, [user?.id])
+
+  const matches = list || []
+
   return (
     <div className="screen">
       <h1 className="page-title">Chats</h1>
       <p className="page-subtitle">Coordinate a game with your matches</p>
 
+      {list !== null && matches.length === 0 && (
+        <div className="empty-state"><div className="emoji">💬</div><p>No chats yet — match with someone in Discover first!</p></div>
+      )}
+
       <div className="chat-list">
-        {MOCK_MATCHES.map((m) => {
+        {matches.map((m) => {
           const last = m.messages[m.messages.length - 1]
           return (
             <Link className="chat-row" to={`/app/chat/${m.id}`} key={m.id}>
@@ -25,7 +43,7 @@ export default function ChatList() {
                   <span className="chat-row__time">{last?.time}</span>
                 </div>
                 <div className="chat-row__preview">
-                  {last?.from === 'me' ? 'You: ' : ''}{last?.text}
+                  {last ? `${last.from === 'me' ? 'You: ' : ''}${last.text}` : 'Say hi 👋'}
                 </div>
               </div>
             </Link>

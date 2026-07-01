@@ -2,36 +2,45 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PlayerCard from '../components/PlayerCard.jsx'
 import SectionTabs from '../components/SectionTabs.jsx'
-import { MOCK_PLAYERS } from '../data/mockPlayers.js'
+import { useAuth } from '../context/AuthContext.jsx'
+import { fetchDiscover, recordSwipe } from '../lib/social.js'
 import './Swipe.css'
 
 const SWIPE_THRESHOLD = 110
 
 export default function Swipe() {
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const myId = user?.id
+
+  const [players, setPlayers] = useState(null) // null = loading
   const [index, setIndex] = useState(0)
   const [drag, setDrag] = useState({ x: 0, active: false })
-  const [flyOut, setFlyOut] = useState(null) // 'left' | 'right' | null
+  const [flyOut, setFlyOut] = useState(null)
   const [match, setMatch] = useState(null)
   const [showHint, setShowHint] = useState(() => !localStorage.getItem('duoz.swipehint'))
   const startX = useRef(0)
+
+  useEffect(() => {
+    let active = true
+    fetchDiscover(myId).then((list) => { if (active) setPlayers(list || []) })
+    return () => { active = false }
+  }, [myId])
 
   const dismissHint = () => {
     setShowHint(false)
     localStorage.setItem('duoz.swipehint', '1')
   }
 
-  const current = MOCK_PLAYERS[index]
-  const next = MOCK_PLAYERS[index + 1]
-
+  const deck = players || []
+  const current = deck[index]
+  const next = deck[index + 1]
   const verdict = drag.x > 40 ? 'like' : drag.x < -40 ? 'nope' : null
 
-  // ---- pointer drag ----
   const onPointerDown = (e) => {
     if (flyOut) return
     startX.current = e.clientX
     setDrag({ x: 0, active: true })
-    // capture only for mouse — on touch, leave it free so vertical scrolling works
     if (e.pointerType === 'mouse') e.currentTarget.setPointerCapture?.(e.pointerId)
   }
   const onPointerMove = (e) => {
@@ -45,50 +54,45 @@ export default function Swipe() {
     else setDrag({ x: 0, active: false })
   }
 
-  // ---- decide like / skip ----
   const decide = (kind) => {
+    const player = deck[index]
     setDrag({ x: 0, active: false })
     setFlyOut(kind === 'like' ? 'right' : 'left')
-
-    setTimeout(() => {
-      // a like has a chance to become a mutual match
-      if (kind === 'like' && current && Math.random() < 0.6) {
-        setMatch(current)
+    ;(async () => {
+      let matched = false
+      if (player) {
+        const res = await recordSwipe(myId, player, kind === 'like')
+        matched = res.matched
+        if (!player.real && kind === 'like' && Math.random() < 0.5) matched = true
       }
-      setIndex((i) => i + 1)
-      setFlyOut(null)
-    }, 280)
+      setTimeout(() => {
+        if (kind === 'like' && matched && player) setMatch(player)
+        setIndex((i) => i + 1)
+        setFlyOut(null)
+      }, 220)
+    })()
   }
 
-  // keyboard support: ← skip, → like
   useEffect(() => {
     const onKey = (e) => {
-      if (match || showHint || flyOut || !MOCK_PLAYERS[index]) return
+      if (match || showHint || flyOut || !deck[index]) return
       if (e.key === 'ArrowRight') decide('like')
       else if (e.key === 'ArrowLeft') decide('nope')
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [match, showHint, flyOut, index])
+  }, [match, showHint, flyOut, index, players])
 
   const restart = () => setIndex(0)
 
-  // top-card transform
   const cardStyle = () => {
     if (flyOut) {
       const dir = flyOut === 'right' ? 1 : -1
-      return {
-        transform: `translateX(${dir * 140}%) rotate(${dir * 18}deg)`,
-        opacity: 0,
-        transition: 'transform 0.28s ease, opacity 0.28s ease',
-      }
+      return { transform: `translateX(${dir * 140}%) rotate(${dir * 18}deg)`, opacity: 0, transition: 'transform 0.28s ease, opacity 0.28s ease' }
     }
     const rot = drag.x / 18
-    return {
-      transform: `translateX(${drag.x}px) rotate(${rot}deg)`,
-      transition: drag.active ? 'none' : 'transform 0.25s ease',
-    }
+    return { transform: `translateX(${drag.x}px) rotate(${rot}deg)`, transition: drag.active ? 'none' : 'transform 0.25s ease' }
   }
 
   return (
@@ -99,7 +103,12 @@ export default function Swipe() {
       </div>
 
       <div className="deck">
-        {!current ? (
+        {players === null ? (
+          <div className="card empty-state" style={{ position: 'absolute', inset: 0 }}>
+            <div className="emoji">🎮</div>
+            <p>Loading players…</p>
+          </div>
+        ) : !current ? (
           <div className="card empty-state" style={{ position: 'absolute', inset: 0 }}>
             <div className="emoji">🎉</div>
             <h3>You’ve seen everyone!</h3>
@@ -132,12 +141,8 @@ export default function Swipe() {
               <div className="swipe-hint__title neon-text">⚔️ READY CHECK</div>
               <p className="muted">Find your duo like a matchmaking accept screen:</p>
               <div className="swipe-hint__rows">
-                <div className="swipe-hint__row">
-                  <span className="hint-arrow nope">👈</span> Swipe <b className="nope">LEFT</b> to <b className="nope">DODGE</b>
-                </div>
-                <div className="swipe-hint__row">
-                  <span className="hint-arrow like">👉</span> Swipe <b className="like">RIGHT</b> to <b className="like">DUO UP</b>
-                </div>
+                <div className="swipe-hint__row"><span className="hint-arrow nope">👈</span> Swipe <b className="nope">LEFT</b> to <b className="nope">DODGE</b></div>
+                <div className="swipe-hint__row"><span className="hint-arrow like">👉</span> Swipe <b className="like">RIGHT</b> to <b className="like">DUO UP</b></div>
               </div>
               <p className="muted" style={{ fontSize: 13 }}>A mutual <b className="like">DUO UP</b> = a Match → jump into chat.</p>
               <button className="btn btn--primary btn--block" onClick={dismissHint}>GLHF — let’s go 🎮</button>
@@ -148,12 +153,8 @@ export default function Swipe() {
 
       {current && (
         <div className="swipe__actions">
-          <button className="swipe-btn swipe-btn--skip swipe-btn--lg" onClick={() => decide('nope')} aria-label="Skip">
-            ✕
-          </button>
-          <button className="swipe-btn swipe-btn--like swipe-btn--lg" onClick={() => decide('like')} aria-label="Like">
-            ♥
-          </button>
+          <button className="swipe-btn swipe-btn--skip swipe-btn--lg" onClick={() => decide('nope')} aria-label="Skip">✕</button>
+          <button className="swipe-btn swipe-btn--like swipe-btn--lg" onClick={() => decide('like')} aria-label="Like">♥</button>
         </div>
       )}
 
@@ -169,12 +170,8 @@ export default function Swipe() {
           </div>
           <div className="match-found__ready">✓ PARTY FORMED</div>
           <div className="stack full" style={{ maxWidth: 300 }}>
-            <button className="btn btn--primary btn--lg" onClick={() => navigate('/app/chat')}>
-              Open comms 💬
-            </button>
-            <button className="btn btn--secondary" onClick={() => setMatch(null)}>
-              Keep scouting 🔭
-            </button>
+            <button className="btn btn--primary btn--lg" onClick={() => navigate('/app/chat')}>Open comms 💬</button>
+            <button className="btn btn--secondary" onClick={() => setMatch(null)}>Keep scouting 🔭</button>
           </div>
         </div>
       )}
